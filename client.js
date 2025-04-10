@@ -1,4 +1,5 @@
 const readline = require('readline-sync');
+readline.setDefaultOptions({encoding: 'utf8'});
 const { clients, lawyers, scheduling } = require('./database');
 const { sendAppointmentEmail } = require('./emailService');
 
@@ -21,6 +22,7 @@ function clientMenu(client, returnToMain) {
             viewAppointments(client);
         } 
         else if (choice === 3) {
+            console.clear();
             console.log('Você saiu da sua conta.');
             returnToMain();
             break;
@@ -42,7 +44,7 @@ function scheduleAppointment(client, returnToMain) {
     }
 
     lawyers.forEach((lawyer, index) => {
-        console.log(`${index + 1}️⃣ Dr. ${lawyer.name} - Especialidade: ${lawyer.specialty}`);
+        console.log(`${index + 1}️ Dr. ${lawyer.name} - Especialidade: ${lawyer.specialty}`);
     });
 
     const choice = readline.questionInt('Escolha o advogado (0 para voltar): ');
@@ -105,7 +107,10 @@ function isValidTime(time) {
 
     let [hour, minute] = match.slice(1).map(Number);
 
-    if (hour < 8 || hour > 18 || (hour === 12 && minute > 0) || (hour === 13 && minute < 30)) return false;
+    if (minute < 0 || minute > 59) return false;
+
+    if (hour < 8 || hour > 18 || (hour === 18 && minute > 0) || 
+        (hour === 12 && minute > 0) || (hour === 13 && minute < 30)) return false;
 
     return true;
 }
@@ -116,7 +121,7 @@ function clientRegister(returnToMain) {
     console.log('Suas informações para continuar.');
 
     const name = readline.question('Seu Nome: ');
-    const email = readline.question(' Seu Email: ');
+    const email = readline.question('Seu Email: ');
     const password = readline.question('Crie uma Senha: ');
 
     if (clients.find(c => c.email === email)) {

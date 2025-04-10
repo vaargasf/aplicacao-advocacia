@@ -1,4 +1,6 @@
 const readline = require('readline-sync');
+require('dotenv').config();
+readline.setDefaultOptions({encoding: 'utf8'});
 const { lawyers, scheduling } = require('./database');
 const { sendAppointmentEmail } = require('./emailService');
 
@@ -60,23 +62,28 @@ function manageAppointments(lawyer) {
     console.log(`Consulta com ${appointment.clientName} confirmada para o horário ${appointment.time}.`);
 }
 
-function lawyerLogin(returnToMain) {
+function lawyerLogin(callback) {
     console.clear();
-    console.log('Logando...');
-    console.log('Digite seu email e senha para continuar.');
+    const email = readline.questionEMail('Digite seu e-mail: ');
+    const senha = readline.question('Digite sua senha: ', { hideEchoBack: true });
 
-    const email = readline.question('Email: ');
-    const password = readline.question('Senha: ');
+    const lawyer = lawyers.find(l => l.email === email && l.password === senha);
 
-    const lawyer = lawyers.find(l => l.email === email && l.password === password);
+    console.clear();
 
-    if (!lawyer) {
-        console.log('Email ou senha errada.');
-        return;
+    if (lawyer) {
+        console.log(`✅ Login bem-sucedido! Bem-vindo, Dr. ${lawyer.name}`);
+        readline.question('Pressione ENTER para continuar...');
+        lawyerMenu(lawyer, callback); 
+    } else {
+        console.log('❌ Email ou senha incorretos!');
+        readline.question('Pressione ENTER para voltar...');
+        callback(); 
     }
-
-    console.log(`Bem-vindo, Dr. ${lawyer.name}!`);
-    lawyerMenu(lawyer, returnToMain);
 }
 
 module.exports = { lawyerLogin };
+
+
+
+
