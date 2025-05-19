@@ -2,8 +2,15 @@ process.stdin.setEncoding('utf8');
 const readline = require('readline-sync');
 readline.setDefaultOptions({ encoding: 'utf8' });
 
+const figlet = require('figlet'); // ⬅️ Novo
+
 const { clientLogin, clientRegister } = require('./client');
 const { lawyerLogin } = require('./lawyer');
+
+// Função para exibir mensagem em ASCII
+function showAsciiMessage(message) {
+    console.log(figlet.textSync(message, { horizontalLayout: 'default' }));
+}
 
 function animationLyrics(callback) {
     const linhas = [
@@ -15,7 +22,7 @@ function animationLyrics(callback) {
         "FFFFFFFFFFFF     GGG     GGGGGG         JJJJ         NNNN  NNNN     NNNN",
         "FFF              GGG       GGGG         JJJJ         NNNN   NNNN    NNNN",
         "FFF              GGGGGGGGGGGGGG   JJJ   JJJJ         NNNN    NNNN   NNNN",
-        "FFF              GGGGGGGGGGGGGG   JJJJJJJJJJ         NNNN     NNNNNNNNNN",                                             
+        "FFF              GGGGGGGGGGGGGG   JJJJJJJJJJ         NNNN     NNNNNNNNNN",
     ];
 
     const larguraJanela = 72;
@@ -34,15 +41,16 @@ function animationLyrics(callback) {
 
         if (pos > linhas[0].length + 4) {
             clearInterval(interval);
-            setTimeout(callback, 500); // chama o menu após animação
+            setTimeout(callback, 500);
         }
     }, 65);
 }
 
 function mainMenu() {
     while (true) {
-        console.log()
-        console.log('Bem vindos à FGJN Advocacia!')
+        console.log();
+        showAsciiMessage('FGJN'); // ASCII logo
+        console.log('Bem vindos à FGJN Advocacia!');
         console.log('----------------------------');
         console.log('1️ Sou Cliente');
         console.log('2️ Sou Advogado');
@@ -52,6 +60,7 @@ function mainMenu() {
 
         if (choice === 1) {
             console.clear();
+            showAsciiMessage('Olá Cliente');
             console.log('Área do Cliente:');
             console.log('1️ Já tenho conta');
             console.log('2️ Criar uma conta');
@@ -68,16 +77,19 @@ function mainMenu() {
 
         } else if (choice === 2) {
             console.clear();
+            showAsciiMessage('Advogado');
             lawyerLogin(mainMenu);
         } else if (choice === 3) {
+            console.clear();
+            showAsciiMessage('Obrigado!');
             console.log('A FGJN agradece sua visita!');
             console.log('Se precisar de nós, estaremos por aqui. Tamo junto!');
             process.exit();
         } else {
+            showAsciiMessage('Invalido');
             console.log('Opção inválida.');
         }
     }
 }
 
 animationLyrics(mainMenu);
-
