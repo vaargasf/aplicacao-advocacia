@@ -13,8 +13,7 @@ function showAsciiMessage(message) {
 
 function lawyerMenu(lawyer, returnToMain) {
     console.clear();
-    showAsciiMessage(`Olá Dr.`);
-    console.log(`Olá, Dr. ${lawyer.name}!`);
+    showAsciiMessage(`Olá Dr. ${lawyer.name}!`);
     console.log('Aqui você pode gerenciar suas consultas e atender clientes.');
 
     while (true) {

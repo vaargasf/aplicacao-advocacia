@@ -10,8 +10,9 @@ function showAsciiMessage(message) {
 
 function clientMenu(client, returnToMain) {
     console.clear();
-    showAsciiMessage(`Olá`);
-    console.log(`Olá, ${client.name}! Que bom te ver por aqui.`);
+    showAsciiMessage(`Olá, ${client.name}!`);
+    console.log('-------------------------------------');
+    console.log('Que bom te ver por aqui!');
     console.log('Vamos agendar sua consulta com um advogado especializado?');
 
     while (true) {
@@ -43,9 +44,10 @@ function clientMenu(client, returnToMain) {
 
 function scheduleAppointment(client, returnToMain) {
     console.clear();
-    showAsciiMessage('Agendar');
-    console.log('Agendamento de Consulta');
-    console.log('Escolha um advogado para sua consulta:');
+    showAsciiMessage('Agendar Consulta');
+    console.log(`Olá, ${client.name}! Vamos agendar sua consulta?`);
+    console.log('Aqui estão os advogados disponíveis:');
+    console.log('-----------------------------------');
 
     if (lawyers.length === 0) {
         showAsciiMessage('Vazio');
@@ -101,13 +103,11 @@ function scheduleAppointment(client, returnToMain) {
 
 function viewAppointments(client) {
     console.clear();
-    showAsciiMessage('Consultas');
-    console.log('Consultas Agendadas');
+    showAsciiMessage('Consultas Agendadas');
 
     const clientAppointments = scheduling.filter(a => a.clientEmail === client.email);
 
     if (clientAppointments.length === 0) {
-        showAsciiMessage('Nada!');
         console.log('Você ainda não tem consultas agendadas.');
         return;
     }
